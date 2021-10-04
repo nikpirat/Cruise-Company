@@ -6,6 +6,7 @@ import dao.UserDao;
 import model.enums.Role;
 import model.User;
 import org.apache.log4j.Logger;
+import сonstants.Constants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,96 +20,57 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void create(User user) {
-        log.info("Enter create with parameters : " + user);
-        String sql = "INSERT INTO user_role (login, password, role, name, surname, balance) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(sql)) {
-            insertStatement.setString(1, user.getLogin());
-            insertStatement.setString(2, user.getPassword());
-            insertStatement.setString(3, Role.USER.toString());
-            insertStatement.setString(4, user.getName());
-            insertStatement.setString(5, user.getSurname());
-            insertStatement.setFloat(6, user.getBalance());
+             PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_INSERT_INTO_USER)) {
+            insertIntoDB(user, insertStatement);
             insertStatement.execute();
         } catch (SQLException e) {
             log.error("Can`t create user");
             throw new DaoException("Can`t create user", e);
         }
-        log.info("Exit create");
     }
 
 
     public User getByLoginAndPassword(String login, String password) {
-        log.info("Enter getByLoginAndPassword with parameters : " + login + " " + password);
         User user = null;
-        String sql = "Select * from user_role as u where u.login = ? and u.password = ?";
         try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(sql)) {
+             PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_GET_BY_LOGIN_AND_PASS)) {
             insertStatement.setString(1, login);
             insertStatement.setString(2, password);
             try (ResultSet resultSet = insertStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    user = new User();
-                    user.setLogin(resultSet.getString("login"));
-                    user.setId(resultSet.getInt("id"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setRole(Role.valueOf(resultSet.getString("role")));
-                    user.setName(resultSet.getString("name"));
-                    user.setSurname(resultSet.getString("surname"));
-                    user.setBalance(resultSet.getFloat("balance"));
-                }
+                if (resultSet.next())
+                    user = extractUser(resultSet);
             }
         } catch (SQLException e) {
             log.error("Can`t getByLoginAndPassword users");
             throw new DaoException("Can`t find by login and password user", e);
         }
-        log.info("Exit method with parametes : " + user);
         return user;
     }
 
 
     public User getById(int id) {
-        log.info("Enter getById with parameters : " + id);
         User user = null;
-        String sql = "Select * from user_role WHERE id = ?";
         try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(sql)) {
+             PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_FIND_USER)) {
             insertStatement.setInt(1, id);
             try (ResultSet resultSet = insertStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    user = new User();
-                    user.setLogin(resultSet.getString("login"));
-                    user.setId(resultSet.getInt("id"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setRole(Role.valueOf(resultSet.getString("role")));
-                    user.setName(resultSet.getString("name"));
-                    user.setSurname(resultSet.getString("surname"));
-                    user.setBalance(resultSet.getFloat("balance"));
-                }
+                if (resultSet.next())
+                    user = extractUser(resultSet);
             }
         } catch (SQLException e) {
             log.error("Can`t get user");
             throw new DaoException("Can`t get user", e);
         }
-        log.info("Exit method with parametes : " + user);
         return user;
     }
 
 
     @Override
     public void update(User user) {
-        log.info("Enter update with parameters : " + user);
-        String sql = "UPDATE  user_role set login = ?, password = ?, role = ?, name = ? , surname = ?, balance = ?  " +
-                "where id = ?";
         try (Connection connection = ConnectionFactory.getConnection()) {
-            try (PreparedStatement insertStatement = connection.prepareStatement(sql)) {
-                insertStatement.setString(1, user.getLogin());
-                insertStatement.setString(2, user.getPassword());
-                insertStatement.setString(3, Role.USER.toString());
-                insertStatement.setString(4, user.getName());
-                insertStatement.setString(5, user.getSurname());
-                insertStatement.setFloat(6, user.getBalance());
+            try (PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER)) {
+                insertIntoDB(user, insertStatement);
                 insertStatement.setInt(7, user.getId());
                 insertStatement.executeUpdate();
                 connection.setAutoCommit(false);
@@ -123,78 +85,56 @@ public class UserDaoImpl implements UserDao {
             log.error("Can`t update user");
             throw new DaoException("Can`t update user", e);
         }
-        log.info("Exit update");
     }
 
     @Override
     public void deleteById(int id) {
-        log.info("Enter delete method with id : " + id);
-        String sql = "DELETE FROM user_role WHERE id = ?";
         try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(Constants.SQL_DELETE_USER)) {
             statement.setInt(1, id);
             statement.execute();
         } catch (SQLException e) {
             log.error("Can`t delete user");
             throw new DaoException("Can`t delete user", e);
         }
-        log.info("Exit delete");
     }
 
     @Override
     public List<User> findAll() {
-        log.info("Enter findall");
         List<User> users = new ArrayList<>();
-        String sql = "select * from user_role";
         try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
+             PreparedStatement statement = connection.prepareStatement(Constants.SQL_FIND_ALL_USERS);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                User user = new User();
-                user.setSurname(resultSet.getString("surname"));
-                user.setLogin(resultSet.getString("login"));
-                user.setId(resultSet.getInt("id"));
-                user.setRole(Role.valueOf(resultSet.getString("role")));
-                user.setPassword(resultSet.getString("password"));
-                user.setName(resultSet.getString("name"));
-                user.setBalance(resultSet.getFloat("balance"));
+                User user;
+                user=extractUser(resultSet);
                 users.add(user);
             }
         } catch (SQLException e) {
             log.error("Can`t find all user");
             throw new DaoException("Can`t find all users", e);
         }
-        log.info("Exit method with parameters : " + users);
         return users;
     }
 
     @Override
     public List<User> findUsersUsingLimitAndOffset(int currentPage, int recordsPerPage) {
-        log.info("Enter findUsersUsingLimitAndOffset  : " + currentPage + " " + recordsPerPage);
         List<User> users = new ArrayList<>();
         int start = currentPage * recordsPerPage - recordsPerPage;
-        String sql = "select * from user_role ORDER BY ID LIMIT ? OFFSET ?";
         try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(Constants.SQL_FIND_USERS_USING_LIMIT_AND_OFFSET)) {
             statement.setInt(1, recordsPerPage);
             statement.setInt(2, start);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                User user = new User();
-                user.setSurname(resultSet.getString("surname"));
-                user.setLogin(resultSet.getString("login"));
-                user.setId(resultSet.getInt("id"));
-                user.setRole(Role.valueOf(resultSet.getString("role")));
-                user.setPassword(resultSet.getString("password"));
-                user.setName(resultSet.getString("name"));
-                user.setBalance(resultSet.getFloat("balance"));
+                User user;
+                user=extractUser(resultSet);
                 users.add(user);
             }
         } catch (SQLException e) {
             log.error("Can`t Can`t find user with filters");
             throw new DaoException("Can`t find user with filters", e);
         }
-        log.info("Exit method with parameters : " + users);
         return users;
     }
 
@@ -202,9 +142,8 @@ public class UserDaoImpl implements UserDao {
     public int getNumberOfRows() {
         log.info("Enter getNumberOfRows");
         int numOfRows = 0;
-        String sql = "select COUNT(id) FROM user_role";
         try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(Constants.SQL_GET_NUMBER_OF_ROWS)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 numOfRows = resultSet.getInt("count(id)");
@@ -215,5 +154,25 @@ public class UserDaoImpl implements UserDao {
         }
         log.info("Exit method with parameters : " + numOfRows);
         return numOfRows;
+    }
+
+    private User extractUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setSurname(resultSet.getString("surname"));
+        user.setLogin(resultSet.getString("login"));
+        user.setId(resultSet.getInt("id"));
+        user.setRole(Role.valueOf(resultSet.getString("role")));
+        user.setPassword(resultSet.getString("password"));
+        user.setName(resultSet.getString("name"));
+        user.setBalance(resultSet.getFloat("balance"));
+        return user;
+    }
+    private void insertIntoDB(User user, PreparedStatement insertStatement) throws SQLException {
+        insertStatement.setString(1, user.getLogin());
+        insertStatement.setString(2, user.getPassword());
+        insertStatement.setString(3, Role.USER.toString());
+        insertStatement.setString(4, user.getName());
+        insertStatement.setString(5, user.getSurname());
+        insertStatement.setFloat(6, user.getBalance());
     }
 }

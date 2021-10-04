@@ -16,12 +16,9 @@ import java.util.List;
 
 @WebServlet("/cabinet")
 public class UserServlet extends HttpServlet {
-    private UserDaoImpl userDaoImpl = new UserDaoImpl();
-    private ShipDaoImpl shipDaoImpl = new ShipDaoImpl();
-    private CruiseInfoDaoDaoImpl cruiseInfoDaoImpl = new CruiseInfoDaoDaoImpl();
-    private ExcursionDaoImpl excursionDaoImpl = new ExcursionDaoImpl();
-    private ExcursionInfoDaoImpl excursionInfoDaoImpl = new ExcursionInfoDaoImpl();
-    private BonusDaoImpl bonusDao = new BonusDaoImpl();
+    private final UserDaoImpl userDaoImpl = new UserDaoImpl();
+    private final ShipDaoImpl shipDaoImpl = new ShipDaoImpl();
+    private final CruiseInfoDaoImpl cruiseInfoDaoImpl = new CruiseInfoDaoImpl();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -35,7 +32,6 @@ public class UserServlet extends HttpServlet {
         for (String order : orderedItems) {
             shipsInOrder.add(shipDaoImpl.getById(Integer.parseInt(order)));
         }
-        req.setAttribute("excursions", excursionDaoImpl.findAll());
         req.setAttribute("orderedCruises", shipsInOrder);
         req.setAttribute("PRESIDENT", RoomType.PRESIDENT.getPrice());
         req.setAttribute("COMFORT", RoomType.COMFORT.getPrice());
@@ -53,12 +49,7 @@ public class UserServlet extends HttpServlet {
         if (role.equals("USER")) {
             User user = userDaoImpl.getByLoginAndPassword(login, password);
             List<CruiseInfo> userOrderedCruises = cruiseInfoDaoImpl.getAllCruiseInfoByUserId(user.getId());
-            List<ExcursionInfo> excursionInfos = excursionInfoDaoImpl.findAllByUserId(user.getId());
 
-            req.setAttribute("bonuses", findAllUserBonuses(userOrderedCruises));
-            req.setAttribute("excursionsInfo", excursionInfoDaoImpl.findAllByUserId(user.getId()));
-            req.setAttribute("userExcursions", findAllUserExcursions(excursionInfos));
-            req.setAttribute("excursions", excursionDaoImpl.findAll());
             req.setAttribute("cruisesInfo", userOrderedCruises);
             req.setAttribute("userShips", findAllUserShips(userOrderedCruises));
             req.setAttribute("ships", shipDaoImpl.findAll());
@@ -69,33 +60,11 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private List<Bonus> findAllUserBonuses(List<CruiseInfo> userOrderedCruises) {
-        RoomType roomType = null;
-        List<Bonus> bonuses = new ArrayList<>();
-        for (CruiseInfo usr : userOrderedCruises) {
-            if (usr.getRoomType() != roomType) {
-                roomType = usr.getRoomType();
-                for (Bonus bonus : bonusDao.findAllByRoomType(roomType)) {
-                    bonuses.add(bonus);
-                }
-            }
-        }
-        return bonuses;
-    }
-
     private List<Ship> findAllUserShips(List<CruiseInfo> cruiseInfos) {
         List<Ship> userShips = new ArrayList<>();
         for (CruiseInfo cruise : cruiseInfos) {
             userShips.add(shipDaoImpl.getById(cruise.getShipId()));
         }
         return userShips;
-    }
-
-    private List<Excursion> findAllUserExcursions(List<ExcursionInfo> excursionInfos) {
-        List<Excursion> userExcursions = new ArrayList<>();
-        for (ExcursionInfo excursion : excursionInfos) {
-            userExcursions.add(excursionDaoImpl.getById(excursion.getExcursionId()));
-        }
-        return userExcursions;
     }
 }

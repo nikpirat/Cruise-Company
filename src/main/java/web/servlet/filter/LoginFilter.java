@@ -16,8 +16,8 @@ import static java.util.Objects.nonNull;
 
 @WebFilter("/login")
 public class LoginFilter implements Filter {
-    private Validate validate = new Validate();
-    private UserDao userDao = new UserDaoImpl();
+    private final Validate validate = new Validate();
+    private final UserDao userDao = new UserDaoImpl();
 
     @Override
     public void init(FilterConfig filterConfig){}

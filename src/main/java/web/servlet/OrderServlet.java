@@ -10,32 +10,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @WebServlet("/order")
 public class OrderServlet extends HttpServlet {
 
-    private UserDaoImpl userDaoImpl = new UserDaoImpl();
-    private CruiseInfoDaoDaoImpl cruiseInfoDaoImpl = new CruiseInfoDaoDaoImpl();
-    private ShipDaoImpl shipDaoImpl = new ShipDaoImpl();
-    private ExcursionDaoImpl excursionDaoImpl = new ExcursionDaoImpl();
-    private ExcursionInfoDaoImpl excursionInfoDaoImpl = new ExcursionInfoDaoImpl();
+    private final UserDaoImpl userDaoImpl = new UserDaoImpl();
+    private final CruiseInfoDaoImpl cruiseInfoDaoImpl = new CruiseInfoDaoImpl();
+    private final ShipDaoImpl shipDaoImpl = new ShipDaoImpl();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CruiseInfo cruiseInfo = new CruiseInfo();
-        List<Excursion> userExcursions = new ArrayList<>();
-        ExcursionInfo excursionInfo = new ExcursionInfo();
         float finalPrice = 0;
 
-        User user = userDaoImpl.getById( (int) req.getSession().getAttribute("id"));
+        User user = userDaoImpl.getById((int) req.getSession().getAttribute("id"));
         String[] orderedItems = req.getParameterValues("shipId");
 
-        if (req.getParameterValues("excursions") != null) {
-            String[] excursions = req.getParameterValues("excursions");
-            userExcursions = initializeAllUserExcursions(excursions);
-        }
         for (String orderId : orderedItems) {
             Ship ship = shipDaoImpl.getById(Integer.parseInt(orderId));
             cruiseInfo.setShipId(ship.getId());
@@ -51,28 +41,18 @@ public class OrderServlet extends HttpServlet {
             cruiseInfo.setRoomType(roomType);
             finalPrice += ship.getPrice() + roomType.getPrice();
 
-            if (user.getBalance() - finalPrice >= 0) {
+            if (user.getBalance() - finalPrice >= 0)
                 cruiseInfo = cruiseInfoDaoImpl.create(cruiseInfo);
-                    for (Excursion ex : userExcursions) {
-                        if (Integer.parseInt(orderId) == ex.getShipId()) {
-                            excursionInfo.setExcursionId(ex.getId());
-                            excursionInfo.setUserId(user.getId());
-                            excursionInfo.setCruiseInfoId(cruiseInfo.getId());
-                            excursionInfoDaoImpl.create(excursionInfo);
-                            finalPrice += excursionDaoImpl.getById(ex.getId()).getPrice();
-                        }
-                    }
-                }
-            }
-            if ((user.getBalance() - finalPrice) >= 0) {
-                user.setBalance(user.getBalance() - finalPrice);
-                userDaoImpl.update(user);
-            } else {
-                req.setAttribute("notEnoughMoney", true);
-                req.setAttribute("orderPrice", finalPrice);
-                req.setAttribute("user", user);
-                req.getRequestDispatcher("orderDetails.jsp").forward(req, resp);
-            }
+        }
+        if ((user.getBalance() - finalPrice) >= 0) {
+            user.setBalance(user.getBalance() - finalPrice);
+            userDaoImpl.update(user);
+        } else {
+            req.setAttribute("notEnoughMoney", true);
+            req.setAttribute("orderPrice", finalPrice);
+            req.setAttribute("user", user);
+            req.getRequestDispatcher("orderDetails.jsp").forward(req, resp);
+        }
         resp.sendRedirect("/cabinet");
     }
 
@@ -88,13 +68,5 @@ public class OrderServlet extends HttpServlet {
         } else {
             resp.sendRedirect("/login");
         }
-    }
-
-    private List<Excursion> initializeAllUserExcursions(String[] excursions) {
-        List<Excursion> userExcursions = new ArrayList<>();
-        for (String excursion : excursions) {
-            userExcursions.add(excursionDaoImpl.getById(Integer.parseInt(excursion)));
-        }
-        return userExcursions;
     }
 }

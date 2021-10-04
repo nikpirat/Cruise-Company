@@ -1,11 +1,7 @@
 package web.servlet;
 
-import dao.BonusDao;
 import dao.UserDao;
-import dao.impl.BonusDaoImpl;
 import dao.impl.UserDaoImpl;
-import model.Bonus;
-import model.enums.RoomType;
 import model.User;
 
 import javax.servlet.ServletException;
@@ -18,7 +14,6 @@ import java.util.List;
 
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
-    private final BonusDao bonusDao = new BonusDaoImpl();
     private final UserDao userDaoImpl = new UserDaoImpl();
 
     @Override
@@ -38,7 +33,6 @@ public class AdminServlet extends HttpServlet {
             req.setAttribute("noOfPages", countNumberOfPage(recordsPerPage));
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("recordsPerPage", recordsPerPage);
-            req.setAttribute("bonuses", bonusDao.findAllWithRoomTypeNull());
             req.setAttribute("users", userDaoImpl.findAll());
             req.getRequestDispatcher("admin.jsp").forward(req, resp);
         } else {
@@ -48,33 +42,7 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String[] bonuses = req.getParameterValues("bonuses");
-        String roomType = req.getParameter("roomType");
-        String bonusAction = req.getParameter("bonusAction");
-        if (bonusAction.equals("Add Bonuses")) {
-            addBonuses(bonuses, roomType);
-
-        } else if (bonusAction.equals("Remove Bonuses")) {
-            removeBonuses(bonuses);
-        }
         resp.sendRedirect("/login");
-    }
-
-    private void addBonuses(String[] bonuses, String roomType) {
-        System.out.println(roomType);
-        for (String bon : bonuses) {
-            System.out.println(bon);
-            Bonus bonus = bonusDao.getById(Integer.parseInt(bon));
-            System.out.println(bonus.getName());
-            bonus.setRoomType(RoomType.valueOf(roomType));
-            bonusDao.update(bonus);
-        }
-    }
-
-    private void removeBonuses(String[] bonuses) {
-        for (String bon : bonuses) {
-            bonusDao.deleteById(Integer.parseInt(bon));
-        }
     }
 
     private int countNumberOfPage(int recordsPerPage){

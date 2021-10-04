@@ -1,5 +1,5 @@
 import dao.CruiseInfoDao;
-import dao.impl.CruiseInfoDaoDaoImpl;
+import dao.impl.CruiseInfoDaoImpl;
 import model.CruiseInfo;
 import model.enums.RoomType;
 
@@ -11,7 +11,7 @@ public class Test {
         cruiseInfo.setRoomType(RoomType.PRESIDENT);
         cruiseInfo.setTotalPrice(1000);
         cruiseInfo.setUserId(2);
-        CruiseInfoDao cruiseInfoDao = new CruiseInfoDaoDaoImpl();
+        CruiseInfoDao cruiseInfoDao = new CruiseInfoDaoImpl();
 
         cruiseInfoDao.create(cruiseInfo);
         cruiseInfoDao.findAll();

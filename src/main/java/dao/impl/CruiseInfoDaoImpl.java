@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CruiseInfoDaoDaoImpl implements CruiseInfoDao {
+public class CruiseInfoDaoImpl implements CruiseInfoDao {
     private static final Logger log = Logger.getLogger(CruiseInfo.class);
 
     @Override
@@ -69,12 +69,12 @@ public class CruiseInfoDaoDaoImpl implements CruiseInfoDao {
     @Override
     public void update(CruiseInfo cruiseInfo) {
         try (Connection connection = ConnectionFactory.getConnection()) {
-            try (PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_UPDATE_CRUISE_INFO)) {
-                insertStatement.setInt(1, cruiseInfo.getShipId());
-                insertStatement.setString(2, cruiseInfo.getRoomType().toString());
-                insertStatement.setDouble(3, cruiseInfo.getTotalPrice());
-                insertStatement.setInt(4, cruiseInfo.getUserId());
-                insertStatement.executeUpdate();
+            try (PreparedStatement ps = connection.prepareStatement(Constants.SQL_UPDATE_CRUISE_INFO)) {
+                ps.setInt(1, cruiseInfo.getShipId());
+                ps.setString(2, cruiseInfo.getRoomType().toString());
+                ps.setDouble(3, cruiseInfo.getTotalPrice());
+                ps.setInt(4, cruiseInfo.getUserId());
+                ps.executeUpdate();
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();

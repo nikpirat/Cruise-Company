@@ -95,55 +95,6 @@
             </c:forEach>
         </c:forEach>
     </table>
-    <div class="text-info text-center">
-        <h2>Your excursions : </h2>
-    </div>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Duration</th>
-            <th>Price</th>
-            <th>Additional info</th>
-            <th>Excursion Number</th>
-            <th>Order Number</th>
-        </tr>
-        </thead>
-        <c:forEach items="${excursionsInfo}" var="excursionsInfo" varStatus="excursionsInfoIndex">
-            <c:forEach items="${userExcursions}" var="userExcursions" varStatus="userExcursionsIndex">
-                <c:if test="${userExcursionsIndex.index == excursionsInfoIndex.index}">
-                    <tr>
-                    <td><c:out value="${userExcursions.name}"></c:out></td>
-                    <td><c:out value="${userExcursions.duration}"></c:out></td>
-                    <td><c:out value="${userExcursions.price}"></c:out></td>
-                    <td><c:out value="${userExcursions.additionalInfo}"></c:out></td>
-                    <td><c:out value="${userExcursions.id}"></c:out></td>
-                </c:if>
-            </c:forEach>
-            <td><c:out value="${excursionsInfo.cruiseInfoId}"></c:out></td>
-            </tr>
-        </c:forEach>
-    </table>
-
-    <div class="text-info text-center">
-        <h2>Your bonuses : </h2>
-    </div>
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Room Type</th>
-        </tr>
-        </thead>
-        <c:forEach items="${bonuses}" var="bonuses">
-            <tr>
-                <td><c:out value="${bonuses.name}"></c:out></td>
-                <td><c:out value="${bonuses.description}"></c:out></td>
-                <td><c:out value="${bonuses.roomType}"></c:out></td>
-            </tr>
-        </c:forEach>
-    </table>
 </div>
 </c:if>
 </body>
