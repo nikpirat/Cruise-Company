@@ -13,7 +13,7 @@ import java.sql.SQLException;
  */
 
 
-public class Validate {
+public class SecurityService {
 
     /**
      * check using login and password if user is exist

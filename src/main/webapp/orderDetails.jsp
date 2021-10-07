@@ -4,10 +4,10 @@
 <html>
 <head>
     <title>Title</title>
-    <link href="bootstrap/css/bootstrap-theme.min.css.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>
     <link href="styles/styles.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <style>
     label {

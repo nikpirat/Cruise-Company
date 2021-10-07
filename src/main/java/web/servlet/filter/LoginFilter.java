@@ -2,7 +2,7 @@ package web.servlet.filter;
 
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
-import service.Validate;
+import service.SecurityService;
 import model.enums.Role;
 
 import javax.servlet.*;
@@ -16,7 +16,7 @@ import static java.util.Objects.nonNull;
 
 @WebFilter("/login")
 public class LoginFilter implements Filter {
-    private final Validate validate = new Validate();
+    private final SecurityService securityService = new SecurityService();
     private final UserDao userDao = new UserDaoImpl();
 
     @Override
@@ -38,7 +38,7 @@ public class LoginFilter implements Filter {
                 nonNull(session.getAttribute("password"))) {
             Role role = (Role) session.getAttribute("role");
             forwardToPage(req, res, role);
-        } else if (validate.checkUser(login, password)) {
+        } else if (securityService.checkUser(login, password)) {
             Role role = userDao.getByLoginAndPassword(login, password).getRole();
             int id = userDao.getByLoginAndPassword(login, password).getId();
             req.getSession().setAttribute("password", password);
@@ -59,7 +59,7 @@ public class LoginFilter implements Filter {
         } else if (role.equals(Role.USER)) {
             res.sendRedirect("/cabinet");
         } else {
-            req.getRequestDispatcher("login.jsp").forward(req, res);
+            req.getRequestDispatcher("index.jsp").forward(req, res);
         }
     }
 

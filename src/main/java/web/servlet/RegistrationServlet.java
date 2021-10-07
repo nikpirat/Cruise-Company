@@ -1,9 +1,8 @@
 package web.servlet;
 
 import dao.impl.UserDaoImpl;
-import service.Validate;
+import service.SecurityService;
 import model.User;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +13,13 @@ import java.io.IOException;
 
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
-    private Validate validate = new Validate();
+    private SecurityService securityService = new SecurityService();
     private UserDaoImpl userDaoImpl = new UserDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("registration.jsp").forward(req, resp);
+        req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 
     @Override
@@ -34,19 +33,19 @@ public class RegistrationServlet extends HttpServlet {
         user.setPassword(req.getParameter("password"));
         user.setSurname(req.getParameter("surname"));
 
-        String balance = req.getParameter("balance");
-        if (NumberUtils.isNumber(balance) && Float.parseFloat(balance) >= 0) {
-                user.setBalance(Float.parseFloat(balance));
-        } else {
-            req.setAttribute("balanceNotValid", true);
-            req.getRequestDispatcher("registration.jsp").forward(req, resp);
-        }
-        if (!validate.checkLogin(user.getLogin())) {
+//        String balance = req.getParameter("balance");
+//        if (NumberUtils.isNumber(balance) && Float.parseFloat(balance) >= 0) {
+//                user.setBalance(Float.parseFloat(balance));
+//        } else {
+//            req.setAttribute("balanceNotValid", true);
+//            req.getRequestDispatcher("registration.jsp").forward(req, resp);
+//        }
+        if (!securityService.checkLogin(user.getLogin())) {
             userDaoImpl.create(user);
             resp.sendRedirect(getServletContext().getContextPath() + "/");
         } else {
             req.setAttribute("loginIsExist", true);
-            req.getRequestDispatcher("registration.jsp").forward(req, resp);
+            req.getRequestDispatcher("index.jsp").forward(req, resp);
         }
     }
 }
