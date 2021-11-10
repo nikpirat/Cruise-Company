@@ -5,9 +5,9 @@ import model.Ship;
 import java.util.List;
 
 public interface ShipDao {
-    public void create(Ship ship);
-    public Ship getById(int id);
-    public void update(Ship ship);
-    public void deleteById(int id);
-    public List<Ship> findAll();
+    void create(Ship ship);
+    Ship getById(int id);
+    void update(Ship ship);
+    void deleteById(int id);
+    List<Ship> findAll();
 }

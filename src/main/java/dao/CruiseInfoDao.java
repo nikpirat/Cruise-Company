@@ -6,9 +6,9 @@ import model.Ship;
 import java.util.List;
 
 public interface CruiseInfoDao {
-    public CruiseInfo create(CruiseInfo cruiseInfo);
-    public CruiseInfo getById(int id);
-    public void update(CruiseInfo cruiseInfo);
-    public void deleteById(int id);
-    public List<CruiseInfo> findAll();
+    CruiseInfo create(CruiseInfo cruiseInfo);
+    CruiseInfo getById(int id);
+    void update(CruiseInfo cruiseInfo);
+    void deleteById(int id);
+    List<CruiseInfo> findAll();
 }

@@ -20,7 +20,6 @@
     </div>
 </c:if>
 
-
 <div class="container-fluid" style="font-size: 20px">
     <div class="container">
         <h1>Hello, Admin</h1>
@@ -44,33 +43,15 @@
                         <c:url value="admin" var="URL">
                             <c:param name="id" value="${users.id}"/>
                         </c:url>
-                        <a href="${URL}"><c:out value="${users.login}"></c:out> </a>
+                        <a href="/manageCruises"><c:out value="${users.login}"/> </a>
                     </td>
-                    <td><c:out value="${users.name}"></c:out></td>
-                    <td><c:out value="${users.surname}"></c:out></td>
-                    <td><c:out value="${users.balance}"></c:out></td>
+                    <td><c:out value="${users.name}"/></td>
+                    <td><c:out value="${users.surname}"/></td>
+                    <td><c:out value="${users.balance}"/></td>
                 </tr>
             </c:forEach>
         </table>
     </div>
-<%--    <div class="row">--%>
-<%--        <form action="/admin" method="get">--%>
-<%--            <div class="col-md-2 col-md-offset-5">--%>
-<%--                <input type="hidden" name="currentPage" value="1">--%>
-<%--                <div class="form-group" style="float: left;padding: 5px">--%>
-<%--                    <select class="form-control" id="records" name="recordsPerPage">--%>
-<%--                        <option value="1">1</option>--%>
-<%--                        <option value="3" selected>3</option>--%>
-<%--                        <option value="5">5</option>--%>
-<%--                    </select>--%>
-<%--                </div>--%>
-<%--                <div style="float: left; padding: 5px">--%>
-<%--                    <button type="submit" class="btn btn-primary">Submit</button>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </form>--%>
-
-<%--    </div>--%>
     <div class="col-md-2 col-md-offset-5">
         <nav aria-label="Navigation for countries">
             <ul class="pagination">

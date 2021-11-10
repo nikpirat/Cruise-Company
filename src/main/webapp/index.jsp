@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,58 +62,6 @@
         });
     });
 </script>
-<%--<div class="container right-panel-active">--%>
-<%--    <!-- Sign Up -->--%>
-
-<%--    <div class="container__form container--signup">--%>
-<%--        <form name="registration" action="/registration" method="post" class="form" id="form1" >--%>
-<%--            <h2 class="form__title">Sign Up</h2>--%>
-<%--            <input type="text" name="login" placeholder="Login" required class="input"/>--%>
-<%--            <input type="password" name="password" placeholder="Password" required class="input"/>--%>
-<%--            <input type="text" name="name" placeholder="First Name" required class="input"/>--%>
-<%--            <input type="text" name="surname" placeholder="Second Name" required class="input"/>--%>
-<%--            <button class="btn" type="submit" value="Register">Sign Up</button>--%>
-<%--        </form>--%>
-<%--    </div>--%>
-
-<%--    <!-- Sign In -->--%>
-<%--    <div class="container__form container--signin">--%>
-<%--        <form action="/login" method="post" class="form" id="form2">--%>
-<%--            <h2 class="form__title">Sign In</h2>--%>
-<%--            <input type="text" name="login" required placeholder="Login" class="input"/>--%>
-<%--            <input type="password" name="password" required placeholder="Password" class="input"/>--%>
-<%--            <a href="#" class="link">Forgot your password?</a>--%>
-<%--            <button class="btn" type="submit">Sign In</button>--%>
-<%--        </form>--%>
-<%--    </div>--%>
-
-<%--    <!-- Overlay -->--%>
-<%--    <div class="container__overlay">--%>
-<%--        <div class="overlay">--%>
-<%--            <div class="overlay__panel overlay--left">--%>
-<%--                <button class="btn" id="signIn">Sign In</button>--%>
-<%--            </div>--%>
-<%--            <div class="overlay__panel overlay--right">--%>
-<%--                <button class="btn" id="signUp">Sign Up</button>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
-
-<%--<script>--%>
-<%--    const signInBtn = document.getElementById("signIn");--%>
-<%--    const signUpBtn = document.getElementById("signUp");--%>
-<%--    const container = document.querySelector(".container");--%>
-
-<%--    signInBtn.addEventListener("click", () => {--%>
-<%--        container.classList.remove("right-panel-active");--%>
-<%--    });--%>
-
-<%--    signUpBtn.addEventListener("click", () => {--%>
-<%--        container.classList.add("right-panel-active");--%>
-<%--    });--%>
-
-<%--</script>--%>
 
 </body>
 </html>

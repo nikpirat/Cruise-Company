@@ -13,8 +13,8 @@ import java.io.IOException;
 
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
-    private SecurityService securityService = new SecurityService();
-    private UserDaoImpl userDaoImpl = new UserDaoImpl();
+    private final SecurityService securityService = new SecurityService();
+    private final UserDaoImpl userDaoImpl = new UserDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

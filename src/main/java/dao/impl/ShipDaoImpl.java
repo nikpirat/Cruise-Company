@@ -101,24 +101,24 @@ public class ShipDaoImpl implements ShipDao {
         return ships;
     }
 
-    public Ship getAllShipByUserId(int id) {
-        Ship ship = null;
-        String sql = "select * from ship join user_role on ship.id = user_role.cruise_id where user_role.id = ?";
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(sql)) {
-            insertStatement.setInt(1, id);
-            try (ResultSet resultSet = insertStatement.executeQuery()) {
-                while (resultSet.next()) {
-                    ship = extractShip(resultSet);
-                }
-            }
-        } catch (SQLException e) {
-            log.error("Can`t find all ships");
-            throw new DaoException("Can`t get all ships by user id", e);
-        }
-        log.info("Exit method with parameters : " + ship);
-        return ship;
-    }
+//    public Ship getAllShipByUserId(int id) {
+//        Ship ship = null;
+//        String sql = "select * from ship join user_role on ship.id = user_role.cruise_id where user_role.id = ?";
+//        try (Connection connection = ConnectionFactory.getConnection();
+//             PreparedStatement insertStatement = connection.prepareStatement(sql)) {
+//            insertStatement.setInt(1, id);
+//            try (ResultSet resultSet = insertStatement.executeQuery()) {
+//                while (resultSet.next()) {
+//                    ship = extractShip(resultSet);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            log.error("Can`t find all ships");
+//            throw new DaoException("Can`t get all ships by user id", e);
+//        }
+//        log.info("Exit method with parameters : " + ship);
+//        return ship;
+//    }
     private Ship extractShip(ResultSet resultSet) throws SQLException {
         Ship ship = new Ship();
         ship.setAmountPorts(resultSet.getInt("amount_ports"));

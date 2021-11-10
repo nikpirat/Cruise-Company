@@ -18,7 +18,7 @@
         <a href="/logout" class="btn btn-danger btn-lg">
             <span class="glyphicon glyphicon-log-out"></span> Log Out
         </a>
-        <a style="float: right">Balance : ${user.balance} $</a>
+        <a style="float: right" href="/topUp">Balance : ${user.balance} $</a>
     </div>
 </div>
 <div class="container">
@@ -39,12 +39,12 @@
             <c:forEach items="${ships}" var="ships">
                 <tbody>
                 <tr>
-                    <td><c:out value="${ships.name}"></c:out></td>
-                    <td><c:out value="${ships.passengerAmount}"></c:out></td>
-                    <td><c:out value="${ships.routeTo}"></c:out></td>
-                    <td><c:out value="${ships.routeFrom}"></c:out></td>
-                    <td><c:out value="${ships.travelStart}"></c:out></td>
-                    <td><c:out value="${ships.travelEnd}"></c:out></td>
+                    <td><c:out value="${ships.name}"/></td>
+                    <td><c:out value="${ships.passengerAmount}"/></td>
+                    <td><c:out value="${ships.routeTo}"/></td>
+                    <td><c:out value="${ships.routeFrom}"/></td>
+                    <td><c:out value="${ships.travelStart}"/></td>
+                    <td><c:out value="${ships.travelEnd}"/></td>
                     <td><p><input type="checkbox" name="${"shipId"}" value="${ships.id}"></p></td>
                 </tr>
                 </tbody>
@@ -79,19 +79,19 @@
             <c:forEach items="${userShips}" var="userShips" varStatus="userShipsIndex">
                 <c:if test="${userShipsIndex.index == index}">
                     <tr>
-                    <td><c:out value="${userShips.name}"></c:out></td>
-                    <td><c:out value="${userShips.passengerAmount}"></c:out></td>
-                    <td><c:out value="${userShips.routeTo}"></c:out></td>
-                    <td><c:out value="${userShips.routeFrom}"></c:out></td>
-                    <td><c:out value="${userShips.travelStart}"></c:out></td>
-                    <td><c:out value="${userShips.travelEnd}"></c:out></td>
+                    <td><c:out value="${userShips.name}"/></td>
+                    <td><c:out value="${userShips.passengerAmount}"/></td>
+                    <td><c:out value="${userShips.routeTo}"/></td>
+                    <td><c:out value="${userShips.routeFrom}"/></td>
+                    <td><c:out value="${userShips.travelStart}"/></td>
+                    <td><c:out value="${userShips.travelEnd}"/></td>
                 </c:if>
             </c:forEach>
             <c:forEach items="${cruisesInfo}" var="cruisesInfo" varStatus="cruise">
                 <c:if test="${cruise.index == index}">
-                    <td><c:out value="${cruisesInfo.roomType}"></c:out></td>
-                    <td><c:out value="${cruisesInfo.totalPrice}"></c:out></td>
-                    <td><c:out value="${cruisesInfo.id}"></c:out></td>
+                    <td><c:out value="${cruisesInfo.roomType}"/></td>
+                    <td><c:out value="${cruisesInfo.totalPrice}"/></td>
+                    <td><c:out value="${cruisesInfo.id}"/></td>
                     </tr>
                 </c:if>
             </c:forEach>

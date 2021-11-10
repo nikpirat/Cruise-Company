@@ -5,11 +5,11 @@ import model.User;
 import java.util.List;
 
 public interface UserDao {
-    public void create(User user);
-    public void update(User user);
-    public void deleteById(int id);
-    public List<User> findAll();
-    public List<User> findUsersUsingLimitAndOffset(int currentPage, int numOfRecords);
-    public int getNumberOfRows();
-    public User getByLoginAndPassword(String login, String password);
+    void create(User user);
+    void update(User user);
+    void deleteById(int id);
+    List<User> findAll();
+    List<User> findUsersUsingLimitAndOffset(int currentPage, int numOfRecords);
+    int getNumberOfRows();
+    User getByLoginAndPassword(String login, String password);
 }
