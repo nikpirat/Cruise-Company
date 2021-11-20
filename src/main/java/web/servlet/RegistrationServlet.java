@@ -33,13 +33,6 @@ public class RegistrationServlet extends HttpServlet {
         user.setPassword(req.getParameter("password"));
         user.setSurname(req.getParameter("surname"));
 
-//        String balance = req.getParameter("balance");
-//        if (NumberUtils.isNumber(balance) && Float.parseFloat(balance) >= 0) {
-//                user.setBalance(Float.parseFloat(balance));
-//        } else {
-//            req.setAttribute("balanceNotValid", true);
-//            req.getRequestDispatcher("registration.jsp").forward(req, resp);
-//        }
         if (!securityService.checkLogin(user.getLogin())) {
             userDaoImpl.create(user);
             resp.sendRedirect(getServletContext().getContextPath() + "/");

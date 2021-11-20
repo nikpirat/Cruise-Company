@@ -25,24 +25,24 @@
                 <input type="text" name="surname" class="input" required placeholder="Second Name">
                 <input type="submit" class="button" value="Sign Up">
             </form><!--.login-form-->
-            <div class="help-text">
-                <p>By signing up, you agree to our</p>
-                <p><a href="#">Terms of service</a></p>
-            </div><!--.help-text-->
+<%--            <div class="help-text">--%>
+<%--                <p>By signing up, you agree to our</p>--%>
+<%--                <p><a>Terms of service</a></p>--%>
+<%--            </div><!--.help-text-->--%>
         </div><!--.signup-tab-content-->
 
         <div id="login-tab-content" class="active">
             <form class="login-form" action="/login" method="post">
                 <input type="text" name="login" class="input" required placeholder="Username">
                 <input type="password" name="password" class="input" required placeholder="Password">
-                <input type="checkbox" class="checkbox" id="remember_me">
-                <label for="remember_me">Remember me</label>
+<%--                <input type="checkbox" class="checkbox" id="remember_me">--%>
+<%--                <label for="remember_me">Remember me</label>--%>
 
                 <input type="submit" class="button" value="Login">
             </form><!--.login-form-->
-            <div class="help-text">
-                <p><a href="#">Forget your password?</a></p>
-            </div><!--.help-text-->
+<%--            <div class="help-text">--%>
+<%--                <p><a href="#">Forget your password?</a></p>--%>
+<%--            </div><!--.help-text-->--%>
         </div><!--.login-tab-content-->
     </div><!--.tabs-content-->
 </div><!--.form-wrap-->

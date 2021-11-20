@@ -30,7 +30,7 @@ public class OrderServlet extends HttpServlet {
             Ship ship = shipDaoImpl.getById(Integer.parseInt(orderId));
             cruiseInfo.setShipId(ship.getId());
             if (req.getParameter("type" + orderId) == null ||
-                    req.getParameter("type" + orderId).toString().isEmpty()) {
+                    req.getParameter("type" + orderId).isEmpty()) {
                 req.setAttribute("chooseRoomType", true);
                 req.getRequestDispatcher("orderDetails.jsp").forward(req, resp);
             }

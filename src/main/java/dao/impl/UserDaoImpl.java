@@ -132,7 +132,7 @@ public class UserDaoImpl implements UserDao {
                 users.add(user);
             }
         } catch (SQLException e) {
-            log.error("Can`t Can`t find user with filters");
+            log.error("Can`t find user with filters");
             throw new DaoException("Can`t find user with filters", e);
         }
         return users;
