@@ -116,7 +116,7 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
         }
         return allCruisesInfo;
     }
-
+    @Override
     public List<CruiseInfo> getAllCruiseInfoByUserId(int id) {
         List<CruiseInfo> cruiseInfoList = new ArrayList<>();
         try (Connection connection = ConnectionFactory.getConnection();

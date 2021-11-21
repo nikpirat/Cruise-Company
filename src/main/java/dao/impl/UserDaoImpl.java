@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-
+    @Override
     public User getByLoginAndPassword(String login, String password) {
         User user = null;
         try (Connection connection = ConnectionFactory.getConnection();
@@ -48,7 +48,7 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-
+    @Override
     public User getById(int id) {
         User user = null;
         try (Connection connection = ConnectionFactory.getConnection();
@@ -107,7 +107,7 @@ public class UserDaoImpl implements UserDao {
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 User user;
-                user=extractUser(resultSet);
+                user = extractUser(resultSet);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -128,7 +128,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 User user;
-                user=extractUser(resultSet);
+                user = extractUser(resultSet);
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -167,6 +167,7 @@ public class UserDaoImpl implements UserDao {
         user.setBalance(resultSet.getFloat("balance"));
         return user;
     }
+
     private void insertIntoDB(User user, PreparedStatement insertStatement) throws SQLException {
         insertStatement.setString(1, user.getLogin());
         insertStatement.setString(2, user.getPassword());

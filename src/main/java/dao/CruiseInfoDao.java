@@ -11,4 +11,5 @@ public interface CruiseInfoDao {
     void update(CruiseInfo cruiseInfo);
     void deleteById(int id);
     List<CruiseInfo> findAll();
+    List<CruiseInfo> getAllCruiseInfoByUserId(int id);
 }

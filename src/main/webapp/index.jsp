@@ -25,10 +25,6 @@
                 <input type="text" name="surname" class="input" required placeholder="Second Name">
                 <input type="submit" class="button" value="Sign Up">
             </form><!--.login-form-->
-<%--            <div class="help-text">--%>
-<%--                <p>By signing up, you agree to our</p>--%>
-<%--                <p><a>Terms of service</a></p>--%>
-<%--            </div><!--.help-text-->--%>
         </div><!--.signup-tab-content-->
 
         <div id="login-tab-content" class="active">
@@ -40,9 +36,6 @@
 
                 <input type="submit" class="button" value="Login">
             </form><!--.login-form-->
-<%--            <div class="help-text">--%>
-<%--                <p><a href="#">Forget your password?</a></p>--%>
-<%--            </div><!--.help-text-->--%>
         </div><!--.login-tab-content-->
     </div><!--.tabs-content-->
 </div><!--.form-wrap-->

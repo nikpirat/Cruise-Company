@@ -12,4 +12,5 @@ public interface UserDao {
     List<User> findUsersUsingLimitAndOffset(int currentPage, int numOfRecords);
     int getNumberOfRows();
     User getByLoginAndPassword(String login, String password);
+    User getById(int id);
 }

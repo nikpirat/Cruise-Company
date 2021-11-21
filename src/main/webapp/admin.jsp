@@ -45,7 +45,7 @@
                         </c:url>
                         <a href="/manageCruises"><c:out value="${users.login}"/> </a>
                     </td>
-                    <td><c:out value="${users.name}"/></td>
+                    <td href="/manageCruises?id=${users.getId()}"><c:out value="${users.name}"/></td>
                     <td><c:out value="${users.surname}"/></td>
                     <td><c:out value="${users.balance}"/></td>
                 </tr>
