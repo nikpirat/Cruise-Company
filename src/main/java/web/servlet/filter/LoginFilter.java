@@ -1,9 +1,8 @@
 package web.servlet.filter;
 
-import dao.UserDao;
-import dao.impl.UserDaoImpl;
 import service.SecurityService;
 import model.enums.Role;
+import service.UserService;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -17,7 +16,7 @@ import static java.util.Objects.nonNull;
 @WebFilter("/login")
 public class LoginFilter implements Filter {
     private final SecurityService securityService = new SecurityService();
-    private final UserDao userDao = new UserDaoImpl();
+    private final UserService userService = new UserService();
 
     @Override
     public void init(FilterConfig filterConfig){}
@@ -39,8 +38,8 @@ public class LoginFilter implements Filter {
             Role role = (Role) session.getAttribute("role");
             forwardToPage(req, res, role);
         } else if (securityService.checkUser(login, password)) {
-            Role role = userDao.getByLoginAndPassword(login, password).getRole();
-            int id = userDao.getByLoginAndPassword(login, password).getId();
+            Role role = userService.getByLoginAndPassword(login, password).getRole();
+            int id = userService.getByLoginAndPassword(login, password).getId();
             req.getSession().setAttribute("password", password);
             req.getSession().setAttribute("login", login);
             req.getSession().setAttribute("role", role);
@@ -50,7 +49,6 @@ public class LoginFilter implements Filter {
             forwardToPage(req, res, Role.UNKNOWN);
         }
     }
-
 
     private void forwardToPage(HttpServletRequest req, HttpServletResponse res, Role role)
             throws ServletException, IOException {

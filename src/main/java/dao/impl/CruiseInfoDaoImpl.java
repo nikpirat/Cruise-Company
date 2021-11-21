@@ -1,6 +1,6 @@
 package dao.impl;
 
-import dao.ConnectionFactory;
+import dao.ConnectionPool;
 import dao.CruiseInfoDao;
 import dao.exception.DaoException;
 import model.CruiseInfo;
@@ -20,7 +20,7 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = ConnectionFactory.getConnection().prepareStatement(Constants.SQL_INSERT_INTO_CRUISE_INFO, Statement.RETURN_GENERATED_KEYS);
+            ps = ConnectionPool.getConnection().prepareStatement(Constants.SQL_INSERT_INTO_CRUISE_INFO, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, cruiseInfo.getShipId());
             ps.setString(2, cruiseInfo.getRoomType().toString());
             ps.setDouble(3, cruiseInfo.getTotalPrice());
@@ -29,16 +29,14 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
             if (ps.executeUpdate() != 1) return null;
             rs = ps.getGeneratedKeys();
 
-            if (rs.next()) {
-
+            if (rs.next())
                 cruiseInfo.setId(rs.getInt(1));
-            }
         } catch (SQLException e) {
             log.error("Can`t create cruise info");
             throw new DaoException("Can`t create cruiseInfo", e);
         } finally {
-            ConnectionFactory.close(ps);
-            ConnectionFactory.close(rs);
+            ConnectionPool.close(ps);
+            ConnectionPool.close(rs);
         }
         log.info("Exit create");
         return cruiseInfo;
@@ -50,7 +48,7 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
         ResultSet rs = null;
         CruiseInfo cruiseInfo = null;
         try {
-            ps = ConnectionFactory.getConnection().prepareStatement(Constants.SQL_FIND_CRUISE_INFO);
+            ps = ConnectionPool.getConnection().prepareStatement(Constants.SQL_FIND_CRUISE_INFO);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             if (rs.next())
@@ -59,8 +57,8 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
             log.error("Can`t get cruise info");
             throw new DaoException("Can`t get cruiseInfo", e);
         }finally {
-            ConnectionFactory.close(ps);
-            ConnectionFactory.close(rs);
+            ConnectionPool.close(ps);
+            ConnectionPool.close(rs);
         }
         log.info("Exit get with : " + cruiseInfo);
         return cruiseInfo;
@@ -68,7 +66,7 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
 
     @Override
     public void update(CruiseInfo cruiseInfo) {
-        try (Connection connection = ConnectionFactory.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement(Constants.SQL_UPDATE_CRUISE_INFO)) {
                 ps.setInt(1, cruiseInfo.getShipId());
                 ps.setString(2, cruiseInfo.getRoomType().toString());
@@ -89,7 +87,7 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
 
     @Override
     public void deleteById(int id) {
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(Constants.SQL_DELETE_CRUISE_INFO)) {
             statement.setInt(1, id);
             statement.execute();
@@ -102,7 +100,7 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
     @Override
     public List<CruiseInfo> findAll() {
         List<CruiseInfo> allCruisesInfo = new ArrayList<>();
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(Constants.SQL_FIND_ALL_CRUISE_INFO);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -119,7 +117,7 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
     @Override
     public List<CruiseInfo> getAllCruiseInfoByUserId(int id) {
         List<CruiseInfo> cruiseInfoList = new ArrayList<>();
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(Constants.SQL_FIND_ALL_CRUISE_INFO_BY_USER_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {

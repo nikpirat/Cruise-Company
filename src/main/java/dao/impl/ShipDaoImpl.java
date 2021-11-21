@@ -1,6 +1,6 @@
 package dao.impl;
 
-import dao.ConnectionFactory;
+import dao.ConnectionPool;
 import dao.exception.DaoException;
 import dao.ShipDao;
 import model.Ship;
@@ -19,7 +19,7 @@ public class ShipDaoImpl implements ShipDao {
 
     @Override
     public void create(Ship ship) {
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(Constants.SQL_INSERT_INTO_SHIP)) {
             insertIntoDB(ship, ps);
             ps.execute();
@@ -35,7 +35,7 @@ public class ShipDaoImpl implements ShipDao {
         ResultSet rs = null;
         Ship ship = null;
         try {
-            ps=ConnectionFactory.getConnection().prepareStatement(Constants.SQL_FIND_SHIP);
+            ps= ConnectionPool.getConnection().prepareStatement(Constants.SQL_FIND_SHIP);
             ps.setInt(1, id);
              rs = ps.executeQuery();
                 if (rs.next())
@@ -44,15 +44,15 @@ public class ShipDaoImpl implements ShipDao {
             log.error("Can`t create ship");
             throw new DaoException("Can`t get ship", e);
         }finally {
-            ConnectionFactory.close(ps);
-            ConnectionFactory.close(rs);
+            ConnectionPool.close(ps);
+            ConnectionPool.close(rs);
         }
         return ship;
     }
 
     @Override
     public void update(Ship ship) {
-        try (Connection connection = ConnectionFactory.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             try (PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_UPDATE_SHIP)) {
                 insertIntoDB(ship, insertStatement);
                 insertStatement.setFloat(9, ship.getId());
@@ -71,7 +71,7 @@ public class ShipDaoImpl implements ShipDao {
 
     @Override
     public void deleteById(int id) {
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(Constants.SQL_DELETE_SHIP)) {
             statement.setInt(1, id);
             statement.execute();
@@ -86,7 +86,7 @@ public class ShipDaoImpl implements ShipDao {
 
         List<Ship> ships  = new ArrayList<>();
 
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(Constants.SQL_FIND_ALL_SHIPS);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -100,25 +100,6 @@ public class ShipDaoImpl implements ShipDao {
         }
         return ships;
     }
-
-//    public Ship getAllShipByUserId(int id) {
-//        Ship ship = null;
-//        String sql = "select * from ship join user_role on ship.id = user_role.cruise_id where user_role.id = ?";
-//        try (Connection connection = ConnectionFactory.getConnection();
-//             PreparedStatement insertStatement = connection.prepareStatement(sql)) {
-//            insertStatement.setInt(1, id);
-//            try (ResultSet resultSet = insertStatement.executeQuery()) {
-//                while (resultSet.next()) {
-//                    ship = extractShip(resultSet);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            log.error("Can`t find all ships");
-//            throw new DaoException("Can`t get all ships by user id", e);
-//        }
-//        log.info("Exit method with parameters : " + ship);
-//        return ship;
-//    }
     private Ship extractShip(ResultSet resultSet) throws SQLException {
         Ship ship = new Ship();
         ship.setAmountPorts(resultSet.getInt("amount_ports"));

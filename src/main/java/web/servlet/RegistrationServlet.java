@@ -1,8 +1,8 @@
 package web.servlet;
 
-import dao.impl.UserDaoImpl;
 import service.SecurityService;
 import model.User;
+import service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +14,7 @@ import java.io.IOException;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
     private final SecurityService securityService = new SecurityService();
-    private final UserDaoImpl userDaoImpl = new UserDaoImpl();
+    private final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -34,7 +34,7 @@ public class RegistrationServlet extends HttpServlet {
         user.setSurname(req.getParameter("surname"));
 
         if (!securityService.checkLogin(user.getLogin())) {
-            userDaoImpl.create(user);
+            userService.create(user);
             resp.sendRedirect(getServletContext().getContextPath() + "/");
         } else {
             req.setAttribute("loginIsExist", true);

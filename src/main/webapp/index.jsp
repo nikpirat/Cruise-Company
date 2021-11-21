@@ -14,7 +14,7 @@
     <div class="tabs">
         <h3 class="login-tab"><a class="active" href="#login-tab-content">Login</a></h3>
         <h3 class="signup-tab"><a href="#signup-tab-content">Sign Up</a></h3>
-    </div><!--.tabs-->
+    </div>
 
     <div class="tabs-content">
         <div id="signup-tab-content" >
@@ -24,21 +24,19 @@
                 <input type="text" name="name" class="input" required placeholder="First Name">
                 <input type="text" name="surname" class="input" required placeholder="Second Name">
                 <input type="submit" class="button" value="Sign Up">
-            </form><!--.login-form-->
-        </div><!--.signup-tab-content-->
+            </form>
+        </div>
 
         <div id="login-tab-content" class="active">
             <form class="login-form" action="/login" method="post">
                 <input type="text" name="login" class="input" required placeholder="Username">
                 <input type="password" name="password" class="input" required placeholder="Password">
-<%--                <input type="checkbox" class="checkbox" id="remember_me">--%>
-<%--                <label for="remember_me">Remember me</label>--%>
 
                 <input type="submit" class="button" value="Login">
-            </form><!--.login-form-->
-        </div><!--.login-tab-content-->
-    </div><!--.tabs-content-->
-</div><!--.form-wrap-->
+            </form>
+        </div>
+    </div>
+</div>
 
 <script>
     jQuery(document).ready(function ($) {

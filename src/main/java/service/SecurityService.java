@@ -1,7 +1,7 @@
 package service;
 
 
-import dao.ConnectionFactory;
+import dao.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +26,7 @@ public class SecurityService {
     public boolean checkUser(String login, String password) {
         boolean isExist = false;
         String sql = "Select * from user_role as u where u.login = ? and u.password = ?";
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(sql)) {
             insertStatement.setString(1, login);
             insertStatement.setString(2, password);
@@ -50,7 +50,7 @@ public class SecurityService {
     public boolean checkLogin(String login) {
         boolean status = false;
         String sql = "Select * from user_role as ur where ur.login = ?";
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(sql)) {
             insertStatement.setString(1, login);
             ResultSet rs = insertStatement.executeQuery();

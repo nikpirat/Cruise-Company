@@ -24,11 +24,6 @@
                 <div class="card-icon"> Icon </div>
                 <span> Visa Credit Card </span>
                 <span> **** **** **** 1234 </span>
-
-
-
-
-
             </div>
         </div>
         <div class='content'>

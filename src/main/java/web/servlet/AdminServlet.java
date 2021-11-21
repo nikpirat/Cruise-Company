@@ -1,8 +1,7 @@
 package web.servlet;
 
-import dao.UserDao;
-import dao.impl.UserDaoImpl;
 import model.User;
+import service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @WebServlet("/admin")
 public class AdminServlet extends HttpServlet {
-    private final UserDao userDaoImpl = new UserDaoImpl();
+    private final UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,12 +27,12 @@ public class AdminServlet extends HttpServlet {
                 recordsPerPage = Integer.parseInt(req.getParameter("recordsPerPage"));
                 currentPage = Integer.parseInt(req.getParameter("currentPage"));
             }
-            List<User> users = userDaoImpl.findUsersUsingLimitAndOffset(currentPage, recordsPerPage);
+            List<User> users = userService.findUsersUsingLimitAndOffset(currentPage, recordsPerPage);
             req.setAttribute("usersPag", users);
             req.setAttribute("noOfPages", countNumberOfPage(recordsPerPage));
             req.setAttribute("currentPage", currentPage);
             req.setAttribute("recordsPerPage", recordsPerPage);
-            req.setAttribute("users", userDaoImpl.findAll());
+            req.setAttribute("users", userService.findAll());
             req.getRequestDispatcher("admin.jsp").forward(req, resp);
         } else {
             resp.sendRedirect("/login");
@@ -46,7 +45,7 @@ public class AdminServlet extends HttpServlet {
     }
 
     private int countNumberOfPage(int recordsPerPage){
-        int rows = userDaoImpl.getNumberOfRows();
+        int rows = userService.getNumberOfRows();
         int nOfPages = rows / recordsPerPage;
         if (nOfPages % recordsPerPage > 0) {
             nOfPages++;

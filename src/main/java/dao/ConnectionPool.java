@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
-public class ConnectionFactory {
-    private static final Logger log = Logger.getLogger(ConnectionFactory.class);
-    private static final ConnectionFactory connectionFactory = new ConnectionFactory();
+public class ConnectionPool {
+    private static final Logger log = Logger.getLogger(ConnectionPool.class);
+    private static final ConnectionPool CONNECTION_POOL = new ConnectionPool();
     private static String URL;
     private static String CLASS_NAME;
     private static String USER;
@@ -32,7 +32,7 @@ public class ConnectionFactory {
     public static Connection getConnection() {
         log.info("enter method");
         try {
-            connectionFactory.getResource();
+            CONNECTION_POOL.getResource();
         } catch (IOException e) {
             throw new DaoException("Cant take to resources", e);
         }

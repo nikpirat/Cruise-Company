@@ -27,7 +27,7 @@ public class SecurityServiceTest {
         String password = "password";
 
         when(securityService.checkUser(login, password)).thenReturn(true);
-        assertEquals(securityService.checkUser(login, password), true);
+        assertTrue(securityService.checkUser(login, password));
     }
 
     @Test
@@ -37,17 +37,15 @@ public class SecurityServiceTest {
         String login = "login";
 
         when(securityService.checkLogin(login)).thenReturn(true);
-        assertEquals(securityService.checkLogin(login), true);
+        assertTrue(securityService.checkLogin(login));
     }
 
     @Test
     public void testCheckLoginWithNullLogin() {
         SecurityService securityService = mock(SecurityService.class);
 
-        String login = null;
-
-        when(securityService.checkLogin(login)).thenReturn(false);
-        assertEquals(securityService.checkLogin(login), false);
+        when(securityService.checkLogin(null)).thenReturn(false);
+        assertFalse(securityService.checkLogin(null));
     }
     @Test
     public void testCheckLoginWithNumbers() {
@@ -56,7 +54,7 @@ public class SecurityServiceTest {
         String login = "123431";
 
         when(securityService.checkLogin(login)).thenReturn(true);
-        assertEquals(securityService.checkLogin(login), true);
+        assertTrue(securityService.checkLogin(login));
     }
 
 }

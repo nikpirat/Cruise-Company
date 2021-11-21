@@ -70,12 +70,12 @@
                             <c:if test="${index == orderedCruisesStatus.index}">
                                 <tbody>
                                 <tr>
-                                    <td><c:out value="${orderedCruises.name}"></c:out></td>
-                                    <td><c:out value="${orderedCruises.passengerAmount}"></c:out></td>
-                                    <td><c:out value="${orderedCruises.routeTo}"></c:out></td>
-                                    <td><c:out value="${orderedCruises.routeFrom}"></c:out></td>
-                                    <td><c:out value="${orderedCruises.travelStart}"></c:out></td>
-                                    <td><c:out value="${orderedCruises.travelEnd}"></c:out></td>
+                                    <td><c:out value="${orderedCruises.name}"/></td>
+                                    <td><c:out value="${orderedCruises.passengerAmount}"/></td>
+                                    <td><c:out value="${orderedCruises.routeTo}"/></td>
+                                    <td><c:out value="${orderedCruises.routeFrom}"/></td>
+                                    <td><c:out value="${orderedCruises.travelStart}"/></td>
+                                    <td><c:out value="${orderedCruises.travelEnd}"/></td>
                                 </tr>
                                 </tbody>
                                 <input name="shipId" value="${orderedCruises.id}" type="hidden">
@@ -125,12 +125,9 @@
 
 <script>
     function validateRadioButton() {
-        if (document.getElementById('PRESIDENT').checked == false &&
-            document.getElementById('COMFORT').checked == false &&
-            document.getElementById('STANDART').checked == false) {
-            /*   alert("Please, choose your class of room");
-               return false;
-             }*/
+        if (document.getElementById('PRESIDENT').checked === false &&
+            document.getElementById('COMFORT').checked === false &&
+            document.getElementById('STANDART').checked === false) {
         }
     }
 

@@ -1,6 +1,6 @@
 package dao.impl;
 
-import dao.ConnectionFactory;
+import dao.ConnectionPool;
 import dao.exception.DaoException;
 import dao.UserDao;
 import model.enums.Role;
@@ -20,7 +20,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void create(User user) {
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_INSERT_INTO_USER)) {
             insertIntoDB(user, insertStatement);
             insertStatement.execute();
@@ -33,7 +33,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getByLoginAndPassword(String login, String password) {
         User user = null;
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_GET_BY_LOGIN_AND_PASS)) {
             insertStatement.setString(1, login);
             insertStatement.setString(2, password);
@@ -51,7 +51,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getById(int id) {
         User user = null;
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_FIND_USER)) {
             insertStatement.setInt(1, id);
             try (ResultSet resultSet = insertStatement.executeQuery()) {
@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void update(User user) {
-        try (Connection connection = ConnectionFactory.getConnection()) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             try (PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER)) {
                 insertIntoDB(user, insertStatement);
                 insertStatement.setInt(7, user.getId());
@@ -89,7 +89,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void deleteById(int id) {
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(Constants.SQL_DELETE_USER)) {
             statement.setInt(1, id);
             statement.execute();
@@ -102,7 +102,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(Constants.SQL_FIND_ALL_USERS);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -121,7 +121,7 @@ public class UserDaoImpl implements UserDao {
     public List<User> findUsersUsingLimitAndOffset(int currentPage, int recordsPerPage) {
         List<User> users = new ArrayList<>();
         int start = currentPage * recordsPerPage - recordsPerPage;
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(Constants.SQL_FIND_USERS_USING_LIMIT_AND_OFFSET)) {
             statement.setInt(1, recordsPerPage);
             statement.setInt(2, start);
@@ -142,7 +142,7 @@ public class UserDaoImpl implements UserDao {
     public int getNumberOfRows() {
         log.info("Enter getNumberOfRows");
         int numOfRows = 0;
-        try (Connection connection = ConnectionFactory.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(Constants.SQL_GET_NUMBER_OF_ROWS)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

@@ -1,9 +1,6 @@
 package web.servlet;
 
-import dao.CruiseInfoDao;
-import dao.UserDao;
-import dao.impl.CruiseInfoDaoImpl;
-import dao.impl.UserDaoImpl;
+import service.CruiseInfoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +11,10 @@ import java.io.IOException;
 
 @WebServlet("/manageCruises")
 public class ManageCruisesServlet extends HttpServlet {
-    private CruiseInfoDao cruiseInfoDao = new CruiseInfoDaoImpl();
+    private CruiseInfoService cruiseInfoService = new CruiseInfoService();
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.setAttribute("userShips", cruiseInfoDao.getAllCruiseInfoByUserId(Integer.parseInt(request.getParameter("id"))));
+        request.setAttribute("userShips", cruiseInfoService.getAllCruiseInfoByUserId(Integer.parseInt(request.getParameter("id"))));
 
 
     }
