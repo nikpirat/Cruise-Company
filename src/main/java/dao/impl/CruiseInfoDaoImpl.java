@@ -88,9 +88,9 @@ public class CruiseInfoDaoImpl implements CruiseInfoDao {
     @Override
     public void deleteById(int id) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(Constants.SQL_DELETE_CRUISE_INFO)) {
-            statement.setInt(1, id);
-            statement.execute();
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_DELETE_CRUISE_INFO)) {
+            ps.setInt(1, id);
+            ps.execute();
         } catch (SQLException e) {
             log.error("Cant delete");
             throw new DaoException("Can`t delete cruiseInfo", e);

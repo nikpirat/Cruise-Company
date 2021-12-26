@@ -28,7 +28,6 @@ public class ConnectionPool {
         log.info("exit method");
     }
 
-
     public static Connection getConnection() {
         log.info("enter method");
         try {

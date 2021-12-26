@@ -21,9 +21,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void create(User user) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_INSERT_INTO_USER)) {
-            insertIntoDB(user, insertStatement);
-            insertStatement.execute();
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_INSERT_INTO_USER)) {
+            insertIntoDB(user, ps);
+            ps.execute();
         } catch (SQLException e) {
             log.error("Can`t create user");
             throw new DaoException("Can`t create user", e);
@@ -34,10 +34,10 @@ public class UserDaoImpl implements UserDao {
     public User getByLoginAndPassword(String login, String password) {
         User user = null;
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_GET_BY_LOGIN_AND_PASS)) {
-            insertStatement.setString(1, login);
-            insertStatement.setString(2, password);
-            try (ResultSet resultSet = insertStatement.executeQuery()) {
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_GET_BY_LOGIN_AND_PASS)) {
+            ps.setString(1, login);
+            ps.setString(2, password);
+            try (ResultSet resultSet = ps.executeQuery()) {
                 if (resultSet.next())
                     user = extractUser(resultSet);
             }
@@ -52,9 +52,9 @@ public class UserDaoImpl implements UserDao {
     public User getById(int id) {
         User user = null;
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_FIND_USER)) {
-            insertStatement.setInt(1, id);
-            try (ResultSet resultSet = insertStatement.executeQuery()) {
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_FIND_USER)) {
+            ps.setInt(1, id);
+            try (ResultSet resultSet = ps.executeQuery()) {
                 if (resultSet.next())
                     user = extractUser(resultSet);
             }
@@ -65,14 +65,13 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-
     @Override
     public void update(User user) {
         try (Connection connection = ConnectionPool.getConnection()) {
-            try (PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_UPDATE_USER)) {
-                insertIntoDB(user, insertStatement);
-                insertStatement.setInt(7, user.getId());
-                insertStatement.executeUpdate();
+            try (PreparedStatement ps = connection.prepareStatement(Constants.SQL_UPDATE_USER)) {
+                insertIntoDB(user, ps);
+                ps.setInt(7, user.getId());
+                ps.executeUpdate();
                 connection.setAutoCommit(false);
                 connection.commit();
                 connection.setAutoCommit(true);
@@ -90,9 +89,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteById(int id) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(Constants.SQL_DELETE_USER)) {
-            statement.setInt(1, id);
-            statement.execute();
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_DELETE_USER)) {
+            ps.setInt(1, id);
+            ps.execute();
         } catch (SQLException e) {
             log.error("Can`t delete user");
             throw new DaoException("Can`t delete user", e);
@@ -103,8 +102,8 @@ public class UserDaoImpl implements UserDao {
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(Constants.SQL_FIND_ALL_USERS);
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_FIND_ALL_USERS);
+             ResultSet resultSet = ps.executeQuery()) {
             while (resultSet.next()) {
                 User user;
                 user = extractUser(resultSet);
@@ -122,10 +121,10 @@ public class UserDaoImpl implements UserDao {
         List<User> users = new ArrayList<>();
         int start = currentPage * recordsPerPage - recordsPerPage;
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(Constants.SQL_FIND_USERS_USING_LIMIT_AND_OFFSET)) {
-            statement.setInt(1, recordsPerPage);
-            statement.setInt(2, start);
-            ResultSet resultSet = statement.executeQuery();
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_FIND_USERS_USING_LIMIT_AND_OFFSET)) {
+            ps.setInt(1, recordsPerPage);
+            ps.setInt(2, start);
+            ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 User user;
                 user = extractUser(resultSet);
@@ -143,8 +142,8 @@ public class UserDaoImpl implements UserDao {
         log.info("Enter getNumberOfRows");
         int numOfRows = 0;
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(Constants.SQL_GET_NUMBER_OF_ROWS)) {
-            ResultSet resultSet = statement.executeQuery();
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_GET_NUMBER_OF_ROWS)) {
+            ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 numOfRows = resultSet.getInt("count(id)");
             }

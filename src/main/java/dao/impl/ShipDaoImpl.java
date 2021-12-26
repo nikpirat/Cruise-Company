@@ -53,10 +53,10 @@ public class ShipDaoImpl implements ShipDao {
     @Override
     public void update(Ship ship) {
         try (Connection connection = ConnectionPool.getConnection()) {
-            try (PreparedStatement insertStatement = connection.prepareStatement(Constants.SQL_UPDATE_SHIP)) {
-                insertIntoDB(ship, insertStatement);
-                insertStatement.setFloat(9, ship.getId());
-                insertStatement.executeUpdate();
+            try (PreparedStatement ps = connection.prepareStatement(Constants.SQL_UPDATE_SHIP)) {
+                insertIntoDB(ship, ps);
+                ps.setFloat(9, ship.getId());
+                ps.executeUpdate();
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
@@ -72,9 +72,9 @@ public class ShipDaoImpl implements ShipDao {
     @Override
     public void deleteById(int id) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(Constants.SQL_DELETE_SHIP)) {
-            statement.setInt(1, id);
-            statement.execute();
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_DELETE_SHIP)) {
+            ps.setInt(1, id);
+            ps.execute();
         } catch (SQLException e) {
             log.error("Can`t delete ship");
             throw new DaoException("Can`t delete ship", e);
@@ -87,8 +87,8 @@ public class ShipDaoImpl implements ShipDao {
         List<Ship> ships  = new ArrayList<>();
 
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(Constants.SQL_FIND_ALL_SHIPS);
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement ps = connection.prepareStatement(Constants.SQL_FIND_ALL_SHIPS);
+             ResultSet resultSet = ps.executeQuery()) {
             while (resultSet.next()) {
                 Ship ship;
                 ship=extractShip(resultSet);
